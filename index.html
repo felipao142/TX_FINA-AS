@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Caderneta — controle financeiro pessoal</title>
+<meta name="description" content="Registre entradas e saídas, acompanhe o saldo do mês e veja para onde seu dinheiro vai. Seus dados ficam só no seu navegador.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Caderneta</div>
+  <nav class="month-nav" aria-label="Navegar entre meses">
+    <button type="button" class="icon-btn" id="prevMonth" aria-label="Mês anterior">‹</button>
+    <h1 id="monthLabel" aria-live="polite"></h1>
+    <button type="button" class="icon-btn" id="nextMonth" aria-label="Próximo mês">›</button>
+    <button type="button" class="text-btn" id="todayBtn">Mês atual</button>
+  </nav>
+</header>
+
+<main>
+  <section class="balance" aria-labelledby="balanceTitle">
+    <p class="balance-label" id="balanceTitle">Saldo do mês</p>
+    <p class="balance-value" id="balanceValue">R$ 0,00</p>
+
+    <div class="flow" id="flowBar" role="img" aria-label="Proporção entre entradas e saídas">
+      <span class="flow-in" id="flowIn"></span>
+      <span class="flow-out" id="flowOut"></span>
+    </div>
+
+    <dl class="flow-legend">
+      <div>
+        <dt><i class="dot in"></i>Entradas</dt>
+        <dd id="totalIn">R$ 0,00</dd>
+      </div>
+      <div>
+        <dt><i class="dot out"></i>Saídas</dt>
+        <dd id="totalOut">R$ 0,00</dd>
+      </div>
+    </dl>
+  </section>
+
+  <div class="cols">
+    <aside class="card form-card" aria-labelledby="formTitle">
+      <h2 id="formTitle">Novo lançamento</h2>
+
+      <form id="txForm" novalidate>
+        <fieldset class="seg">
+          <legend class="sr">Tipo de lançamento</legend>
+          <label><input type="radio" name="type" value="saida" checked><span>Saída</span></label>
+          <label><input type="radio" name="type" value="entrada"><span>Entrada</span></label>
+        </fieldset>
+
+        <label for="fDesc">Descrição</label>
+        <input id="fDesc" type="text" maxlength="80" placeholder="Ex.: mercado, aluguel, salário" autocomplete="off">
+
+        <div class="row2">
+          <div>
+            <label for="fValue">Valor (R$)</label>
+            <input id="fValue" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off">
+          </div>
+          <div>
+            <label for="fDate">Data</label>
+            <input id="fDate" type="date">
+          </div>
+        </div>
+
+        <label for="fCat">Categoria</label>
+        <select id="fCat"></select>
+
+        <p class="form-error" id="formError" role="alert" hidden></p>
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary" id="submitBtn">Adicionar lançamento</button>
+          <button type="button" class="btn" id="cancelEdit" hidden>Cancelar edição</button>
+        </div>
+      </form>
+    </aside>
+
+    <div class="stack">
+      <section class="card" aria-labelledby="listTitle">
+        <div class="card-head">
+          <h2 id="listTitle">Lançamentos</h2>
+          <span class="count" id="listCount"></span>
+        </div>
+        <ul class="ledger" id="ledger"></ul>
+        <p class="empty" id="emptyMsg" hidden>Nenhum lançamento neste mês. Use o formulário para registrar o primeiro.</p>
+      </section>
+
+      <section class="card" aria-labelledby="catTitle">
+        <h2 id="catTitle">Para onde foi o dinheiro</h2>
+        <ul class="cats" id="catList"></ul>
+        <p class="empty" id="catEmpty" hidden>As saídas do mês aparecem aqui, agrupadas por categoria.</p>
+      </section>
+    </div>
+  </div>
+</main>
+
+<footer class="tools">
+  <div class="tools-row">
+    <button type="button" class="btn" id="exportCsv">Exportar CSV</button>
+    <button type="button" class="btn" id="exportJson">Baixar backup</button>
+    <button type="button" class="btn" id="importBtn">Restaurar backup</button>
+    <input type="file" id="importFile" accept="application/json,.json" hidden>
+    <button type="button" class="btn danger" id="wipeBtn">Apagar tudo</button>
+  </div>
+  <p>Seus dados ficam salvos apenas neste navegador. Faça backup de vez em quando.</p>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
